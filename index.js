@@ -1,21 +1,9 @@
-var fs = require('fs');
+var rq = require('request');
 var http = require('http');
-var GrowingFile = require('growing-file');
 
-var FILENAME = '/home/dave/Desktop/video/video.ogg';
-
-var server = http.createServer(function(req, res) {
-  var file;
-  if (req.url === '/video.ogg') {
-    res.writeHead(200, {
-      'Content-Type': 'video/ogg'
-    });
-    file = GrowingFile.open(FILENAME);
-    file.pipe(res);
-  } else {
-    res.statusCode = 404;
-    res.end('Not Found');
-  }
+var server = http.createServer(function (request, response) {
+  rq.get('http://techslides.com/demos/sample-videos/small.mp4').pipe(response);
 });
 
-server.listen(1337);
+server.listen(8000);
+console.log('Server running on port ' + 8000);
